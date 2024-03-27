@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useRef, useReducer } from 'react'
+import { useState, useRef, useReducer, useCallback } from 'react'
 import Header from './components/Header'
 import Editor from './components/Editor'
 import List from './components/List'
@@ -43,7 +43,42 @@ function App() {
   const [todos, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(3);
 
-  const onCreate = (content) => {
+  // const onCreate = (content) => {
+  //   dispatch({
+  //     type: "CREATE",
+  //     data: {
+  //       id: idRef.current++,
+  //       isDone: false,
+  //       content: content,
+  //       date: new Date().getTime()
+  //     }
+  //   })
+  // }
+
+  // const onUpdate = (targetId) => {
+  //   dispatch({
+  //     type: "UPDATE",
+  //     targetId: targetId,
+  //   })
+  // setTodos(todos.map((todo)=>{
+  //   if(todo.id === targetId){
+  //     return{
+  //       ...todo,
+  //       isDone: !todo.isDone
+  //     }
+  //   }
+  //   return todos;
+  // }))
+  // }
+
+  // const onDelete = (targetId) => {
+  //   dispatch({
+  //     type: "DELETE",
+  //     targetId: targetId
+  //   })
+  // }
+
+  const onCreate = useCallback((content) => {
     dispatch({
       type: "CREATE",
       data: {
@@ -52,32 +87,23 @@ function App() {
         content: content,
         date: new Date().getTime()
       }
-    })
-  }
+    });
+  }, [])
 
-
-  const onUpdate = (targetId) => {
+  const onUpdate = useCallback((targetId) => {
     dispatch({
       type: "UPDATE",
       targetId: targetId,
-    })
-    // setTodos(todos.map((todo)=>{
-    //   if(todo.id === targetId){
-    //     return{
-    //       ...todo,
-    //       isDone: !todo.isDone
-    //     }
-    //   }
-    //   return todos;
-    // }))
-  }
+    });
+  }, [])
 
-  const onDelete = (targetId) => {
+  // 마운트 될때만 생성한다?
+  const onDelete = useCallback((targetId) => {
     dispatch({
       type: "DELETE",
       targetId: targetId
-    })
-  }
+    });
+  }, [])
 
   return (
     <div className="App">
