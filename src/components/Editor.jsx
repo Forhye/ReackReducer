@@ -1,9 +1,15 @@
 import "./Editor.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import { TodoDispatchContext } from "../App"
 
-const Editor= ({onCreate}) =>{
+const Editor = () => {
 
-    const [content,setContent] = useState("");
+    // const data = useContext(TodoDispatchContext);
+    const { onCreate } = useContext(TodoDispatchContext);
+
+    //=> (1) 같은 코드 const {onCreate} = useContext(TodoDispatchContext);
+
+    const [content, setContent] = useState("");
     const contentRef = useRef();
 
     const onChangeContent = (e) => {
@@ -11,17 +17,20 @@ const Editor= ({onCreate}) =>{
     }
 
     const onKeydown = (e) => {
-        if(e.keyCode === 13) {
+        if (e.keyCode === 13) {
             onSubmit();
         }
     }
-    
+
     const onSubmit = () => {
         if (content === "") {
             contentRef.current.focus();
             return;
         }
+        //data.onCreate(content);
         onCreate(content);
+        //=> (1) 같은 코드 onCreate(content);
+
         setContent("");
     }
 
